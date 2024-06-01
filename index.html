@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Time Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: black;
+            color: white;
+        }
+
+        h1 {
+            font-size: 80px; /* 4 times the initial size */
+            margin-bottom: 20px;
+        }
+
+        label, input, p, button {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 5px;
+            margin-bottom: 20px; /* Adjusted margin for the text box */
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Typing Time Calculator</h1>
+    <label for="textInput">Type from A to Z:</label>
+    <input type="text" id="textInput" oninput="checkInput()" onkeydown="startStopTimer(event)">
+    <p id="timeResult"></p>
+    <button onclick="restart()">Restart</button>
+
+    <script>
+        let startTime;
+
+        function startStopTimer(event) {
+            const textInput = document.getElementById('textInput').value;
+
+            if (event.key === 'Enter' && textInput === 'abcdefghijklmnopqrstuvwxyz') {
+                const endTime = performance.now();
+                const timeTaken = (endTime - startTime) / 1000; // Convert milliseconds to seconds
+                document.getElementById('timeResult').innerText = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+                startTime = null; // Reset start time after calculation
+            } else if (!startTime) {
+                startTime = performance.now();
+            }
+        }
+
+        function checkInput() {
+            const textInput = document.getElementById('textInput').value;
+            
+            if (textInput === '') {
+                // Reset the timer if the input field is cleared
+                startTime = null;
+                document.getElementById('timeResult').innerText = '';
+            } else if (textInput !== 'abcdefghijklmnopqrstuvwxyz') {
+                document.getElementById('timeResult').innerText = '';
+            }
+        }
+
+        function restart() {
+            document.getElementById('textInput').value = '';
+            document.getElementById('timeResult').innerText = '';
+            startTime = null;
+        }
+    </script>
+</body>
+</html>
